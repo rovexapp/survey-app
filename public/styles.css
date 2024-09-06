@@ -1,65 +1,61 @@
 body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1, h2 {
-            text-align: center;
-        }
-        button {
-            margin: 10px 0;
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .hidden {
-            display: none;
-        }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-        }
-        .checkbox-group {
-            margin: 10px 0;
-        }
-        .form-section {
-            margin-bottom: 20px;
-        }
-        hr {
-            margin: 20px 0;
-            border: 0;
-            border-top: 1px solid #ccc;
-        }
-        .other-input {
-            display: none;
-            margin-top: 5px;
-        }
-        .question-number {
-            font-weight: bold;
-        }
-        .instructions {
-            background-color: #e9f7fa;
-            border-left: 6px solid #2196F3;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-        #statistics canvas {
-            width: 100% !important;
-            height: 400px !important;
-        }
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+button {
+    margin: 10px 0;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+form {
+    margin-top: 20px;
+}
+
+.form-section {
+    margin-bottom: 20px;
+}
+
+.question-number {
+    font-weight: bold;
+}
+
+.checkbox-group {
+    margin-left: 20px;
+}
+
+.other-input {
+    margin-top: 10px;
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}

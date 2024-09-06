@@ -4,7 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surveys on Quantum Cryptography and Cybersecurity</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        button {
+            margin: 10px 0;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        .checkbox-group {
+            margin: 10px 0;
+        }
+        .form-section {
+            margin-bottom: 20px;
+        }
+        hr {
+            margin: 20px 0;
+            border: 0;
+            border-top: 1px solid #ccc;
+        }
+        .other-input {
+            display: none;
+            margin-top: 5px;
+        }
+        .question-number {
+            font-weight: bold;
+        }
+        .instructions {
+            background-color: #e9f7fa;
+            border-left: 6px solid #2196F3;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        #statistics canvas {
+            width: 100% !important;
+            height: 400px !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -23,11 +89,9 @@
     <button onclick="showSurvey('general')">For General Public</button>
     <button onclick="showStatistics()">Show Statistics</button>
 
-    <!-- Survey for Cybersecurity Professionals -->
     <div id="survey-cybersecurity" class="hidden">
         <h2>Survey for Cybersecurity Professionals</h2>
         <form id="form-cybersecurity">
-            <!-- All questions included -->
             <div class="form-section">
                 <label class="question-number">1. What is your current job title?</label>
                 <select name="jobTitle" required onchange="toggleOtherInput(this, 'otherJobTitleInput')">
@@ -43,102 +107,155 @@
                 </select>
                 <input type="text" name="otherJobTitle" class="other-input" id="otherJobTitleInput" placeholder="Please specify">
             </div>
+            <hr>
             <div class="form-section">
-                <label class="question-number">2. How familiar are you with quantum cryptography?</label>
-                <select name="familiarity" required>
-                    <option value="Not familiar">Not familiar</option>
-                    <option value="Somewhat familiar">Somewhat familiar</option>
-                    <option value="Very familiar">Very familiar</option>
+                <label class="question-number">2. Years of Experience:</label>
+                <select name="experience" required>
+                    <option value="Less than 1 year">Less than 1 year</option>
+                    <option value="1-3 years">1-3 years</option>
+                    <option value="4-6 years">4-6 years</option>
+                    <option value="More than 6 years">More than 6 years</option>
                 </select>
             </div>
+            <hr>
             <div class="form-section">
-                <label class="question-number">3. Do you think quantum computing will impact cybersecurity?</label>
-                <select name="impact" required>
-                    <option value="Yes, significantly">Yes, significantly</option>
-                    <option value="Yes, but not significantly">Yes, but not significantly</option>
-                    <option value="No">No</option>
-                </select>
+                <label class="question-number">3. How familiar are you with the concept of quantum cryptography?</label>
+                <input type="radio" name="familiarity" value="Not familiar at all" required> Not familiar at all<br>
+                <input type="radio" name="familiarity" value="Somewhat familiar"> Somewhat familiar<br>
+                <input type="radio" name="familiarity" value="Familiar"> Familiar<br>
+                <input type="radio" name="familiarity" value="Very familiar"> Very familiar<br>
             </div>
+            <hr>
             <div class="form-section">
-                <label class="question-number">4. Are you currently exploring quantum-resistant encryption solutions?</label>
-                <select name="exploringSolutions" required>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                    <option value="Not yet, but planning to">Not yet, but planning to</option>
-                </select>
+                <label class="question-number">4. Have you received any formal training in quantum cryptography?</label>
+                <input type="radio" name="training" value="Yes"> Yes<br>
+                <input type="radio" name="training" value="No"> No<br>
             </div>
+            <hr>
             <div class="form-section">
-                <label class="question-number">5. In your opinion, how soon will quantum computers be able to break current encryption standards?</label>
-                <select name="timeframe" required>
-                    <option value="Within 5 years">Within 5 years</option>
-                    <option value="5-10 years">5-10 years</option>
-                    <option value="More than 10 years">More than 10 years</option>
-                    <option value="Never">Never</option>
-                </select>
+                <label class="question-number">5. In your opinion, how effective is quantum cryptography compared to traditional encryption methods?</label>
+                <input type="radio" name="effectiveness" value="Much less effective" required> Much less effective<br>
+                <input type="radio" name="effectiveness" value="Less effective"> Less effective<br>
+                <input type="radio" name="effectiveness" value="About the same"> About the same<br>
+                <input type="radio" name="effectiveness" value="More effective"> More effective<br>
             </div>
-            <button type="button" onclick="saveResponses('cybersecurity')">Save Responses</button>
+            <hr>
+            <div class="form-section">
+                <label class="question-number">6. What do you believe are the main benefits of using quantum cryptography in cybersecurity? (Select all that apply)</label>
+                <div class="checkbox-group">
+                    <input type="checkbox" name="benefits" value="Enhanced security against hacking"> Enhanced security against hacking<br>
+                    <input type="checkbox" name="benefits" value="Ability to detect eavesdropping"> Ability to detect eavesdropping<br>
+                    <input type="checkbox" name="benefits" value="Future-proofing against quantum computers"> Future-proofing against quantum computers<br>
+                    <input type="checkbox" name="benefits" value="Other" onchange="toggleOtherInput(this, 'otherBenefitInput')"> Other (please specify)
+                </div>
+                <input type="text" name="otherBenefit" class="other-input" id="otherBenefitInput" placeholder="Please specify">
+            </div>
+            <hr>
+            <div class="form-section">
+                <label class="question-number">7. What challenges do you think hinder the adoption of quantum cryptography? (Select all that apply)</label>
+                <div class="checkbox-group">
+                    <input type="checkbox" name="challenges" value="High implementation costs"> High implementation costs<br>
+                    <input type="checkbox" name="challenges" value="Lack of understanding or training"> Lack of understanding or training<br>
+                    <input type="checkbox" name="challenges" value="Integration with existing systems"> Integration with existing systems<br>
+                    <input type="checkbox" name="challenges" value="Limited real-world applications"> Limited real-world applications<br>
+                    <input type="checkbox" name="challenges" value="Other" onchange="toggleOtherInput(this, 'otherChallengeInput')"> Other (please specify)
+                </div>
+                <input type="text" name="otherChallenge" class="other-input" id="otherChallengeInput" placeholder="Please specify">
+            </div>
+            <hr>
+            <div class="form-section">
+                <label class="question-number">8. How optimistic are you about the future of quantum cryptography in enhancing cybersecurity?</label>
+                <input type="radio" name="optimism" value="Very pessimistic" required> Very pessimistic<br>
+                <input type="radio" name="optimism" value="Pessimistic"> Pessimistic<br>
+                <input type="radio" name="optimism" value="Neutral"> Neutral<br>
+                <input type="radio" name="optimism" value="Optimistic"> Optimistic<br>
+                <input type="radio" name="optimism" value="Very optimistic"> Very optimistic<br>
+            </div>
+            <hr>
+            <div class="form-section">
+                <label class="question-number">9. Are you currently involved in any projects related to quantum cryptography?</label>
+                <input type="radio" name="projects" value="Yes"> Yes<br>
+                <input type="radio" name="projects" value="No"> No<br>
+            </div>
+            <hr>
+            <div class="form-section">
+                <label class="question-number">10. If you have any additional comments or suggestions regarding quantum cryptography, please share them here:</label>
+                <textarea name="comments" rows="4" cols="50"></textarea>
+            </div>
+            <button type="submit">Submit Survey</button>
         </form>
     </div>
 
-    <!-- Survey for General Public -->
     <div id="survey-general" class="hidden">
         <h2>Survey for General Public</h2>
         <form id="form-general">
-            <!-- All questions included -->
             <div class="form-section">
-                <label class="question-number">1. What is your age group?</label>
-                <select name="ageGroup" required>
-                    <option value="Under 18">Under 18</option>
-                    <option value="18-24">18-24</option>
-                    <option value="25-34">25-34</option>
-                    <option value="35-44">35-44</option>
-                    <option value="45-54">45-54</option>
-                    <option value="55 or above">55 or above</option>
-                </select>
+                <label class="question-number">1. How familiar are you with the concept of quantum cryptography?</label>
+                <input type="radio" name="familiarity" value="Not familiar at all" required> Not familiar at all<br>
+                <input type="radio" name="familiarity" value="Somewhat familiar"> Somewhat familiar<br>
+                <input type="radio" name="familiarity" value="Familiar"> Familiar<br>
+                <input type="radio" name="familiarity" value="Very familiar"> Very familiar<br>
             </div>
+            <hr>
             <div class="form-section">
-                <label class="question-number">2. Are you aware of quantum cryptography?</label>
-                <select name="awareness" required>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                </select>
+                <label class="question-number">2. Do you think quantum cryptography is important for the future of cybersecurity?</label>
+                <input type="radio" name="importance" value="Not important" required> Not important<br>
+                <input type="radio" name="importance" value="Somewhat important"> Somewhat important<br>
+                <input type="radio" name="importance" value="Important"> Important<br>
+                <input type="radio" name="importance" value="Very important"> Very important<br>
             </div>
+            <hr>
             <div class="form-section">
-                <label class="question-number">3. Do you think quantum technologies will improve internet security?</label>
-                <select name="improvement" required>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                    <option value="Not sure">Not sure</option>
-                </select>
+                <label class="question-number">3. Have you heard of any recent developments in quantum cryptography?</label>
+                <input type="radio" name="developments" value="Yes"> Yes<br>
+                <input type="radio" name="developments" value="No"> No<br>
             </div>
+            <hr>
             <div class="form-section">
-                <label class="question-number">4. How concerned are you about the privacy of your data online?</label>
-                <select name="concernLevel" required>
-                    <option value="Not concerned">Not concerned</option>
-                    <option value="Somewhat concerned">Somewhat concerned</option>
-                    <option value="Very concerned">Very concerned</option>
-                </select>
+                <label class="question-number">4. What benefits do you think quantum cryptography can bring to cybersecurity? (Select all that apply)</label>
+                <div class="checkbox-group">
+                    <input type="checkbox" name="benefits" value="Enhanced security against hacking"> Enhanced security against hacking<br>
+                    <input type="checkbox" name="benefits" value="Ability to detect eavesdropping"> Ability to detect eavesdropping<br>
+                    <input type="checkbox" name="benefits" value="Future-proofing against quantum computers"> Future-proofing against quantum computers<br>
+                    <input type="checkbox" name="benefits" value="Other" onchange="toggleOtherInput(this, 'otherBenefitInputGeneral')"> Other (please specify)
+                </div>
+                <input type="text" name="otherBenefit" class="other-input" id="otherBenefitInputGeneral" placeholder="Please specify">
             </div>
+            <hr>
             <div class="form-section">
-                <label class="question-number">5. Would you consider using a service that offers quantum-safe encryption for your personal data?</label>
-                <select name="quantumSafeInterest" required>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                    <option value="Maybe">Maybe</option>
-                </select>
+                <label class="question-number">5. What concerns do you have about the adoption of quantum cryptography? (Select all that apply)</label>
+                <div class="checkbox-group">
+                    <input type="checkbox" name="concerns" value="High costs"> High costs<br>
+                    <input type="checkbox" name="concerns" value="Lack of understanding"> Lack of understanding<br>
+                    <input type="checkbox" name="concerns" value="Integration challenges"> Integration challenges<br>
+                    <input type="checkbox" name="concerns" value="Limited real-world use"> Limited real-world use<br>
+                    <input type="checkbox" name="concerns" value="Other" onchange="toggleOtherInput(this, 'otherConcernInputGeneral')"> Other (please specify)
+                </div>
+                <input type="text" name="otherConcern" class="other-input" id="otherConcernInputGeneral" placeholder="Please specify">
             </div>
-            <button type="button" onclick="saveResponses('general')">Save Responses</button>
+            <hr>
+            <div class="form-section">
+                <label class="question-number">6. How do you think quantum cryptography will impact your personal or professional life?</label>
+                <textarea name="impact" rows="4" cols="50"></textarea>
+            </div>
+            <hr>
+            <div class="form-section">
+                <label class="question-number">7. Do you have any additional comments or questions about quantum cryptography?</label>
+                <textarea name="comments" rows="4" cols="50"></textarea>
+            </div>
+            <button type="submit">Submit Survey</button>
         </form>
     </div>
 
-    <!-- Statistics Section -->
     <div id="statistics" class="hidden">
-        <h2>Statistics</h2>
-        <div id="stats-content">Statistics will be displayed here.</div>
-        <button onclick="hideStatistics()">Close</button>
+        <h2>Survey Statistics</h2>
+        <div id="statistics-container">
+            <!-- Chart.js charts will be rendered here -->
+        </div>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

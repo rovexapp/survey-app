@@ -23,9 +23,11 @@
     <button onclick="showSurvey('general')">For General Public</button>
     <button onclick="showStatistics()">Show Statistics</button>
 
+    <!-- Survey for Cybersecurity Professionals -->
     <div id="survey-cybersecurity" class="hidden">
         <h2>Survey for Cybersecurity Professionals</h2>
         <form id="form-cybersecurity">
+            <!-- All questions included -->
             <div class="form-section">
                 <label class="question-number">1. What is your current job title?</label>
                 <select name="jobTitle" required onchange="toggleOtherInput(this, 'otherJobTitleInput')">
@@ -57,13 +59,32 @@
                     <option value="No">No</option>
                 </select>
             </div>
+            <div class="form-section">
+                <label class="question-number">4. Are you currently exploring quantum-resistant encryption solutions?</label>
+                <select name="exploringSolutions" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Not yet, but planning to">Not yet, but planning to</option>
+                </select>
+            </div>
+            <div class="form-section">
+                <label class="question-number">5. In your opinion, how soon will quantum computers be able to break current encryption standards?</label>
+                <select name="timeframe" required>
+                    <option value="Within 5 years">Within 5 years</option>
+                    <option value="5-10 years">5-10 years</option>
+                    <option value="More than 10 years">More than 10 years</option>
+                    <option value="Never">Never</option>
+                </select>
+            </div>
             <button type="button" onclick="saveResponses('cybersecurity')">Save Responses</button>
         </form>
     </div>
 
+    <!-- Survey for General Public -->
     <div id="survey-general" class="hidden">
         <h2>Survey for General Public</h2>
         <form id="form-general">
+            <!-- All questions included -->
             <div class="form-section">
                 <label class="question-number">1. What is your age group?</label>
                 <select name="ageGroup" required>
@@ -90,10 +111,27 @@
                     <option value="Not sure">Not sure</option>
                 </select>
             </div>
+            <div class="form-section">
+                <label class="question-number">4. How concerned are you about the privacy of your data online?</label>
+                <select name="concernLevel" required>
+                    <option value="Not concerned">Not concerned</option>
+                    <option value="Somewhat concerned">Somewhat concerned</option>
+                    <option value="Very concerned">Very concerned</option>
+                </select>
+            </div>
+            <div class="form-section">
+                <label class="question-number">5. Would you consider using a service that offers quantum-safe encryption for your personal data?</label>
+                <select name="quantumSafeInterest" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Maybe">Maybe</option>
+                </select>
+            </div>
             <button type="button" onclick="saveResponses('general')">Save Responses</button>
         </form>
     </div>
 
+    <!-- Statistics Section -->
     <div id="statistics" class="hidden">
         <h2>Statistics</h2>
         <div id="stats-content">Statistics will be displayed here.</div>

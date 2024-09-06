@@ -1,96 +1,104 @@
-const responses = {
+const surveyData = {
     cybersecurity: [],
     general: []
 };
 
 function showSurvey(type) {
-    document.getElementById('survey-cybersecurity').classList.add('hidden');
-    document.getElementById('survey-general').classList.add('hidden');
-    document.getElementById('statistics').classList.add('hidden');
-
-    if (type === 'cybersecurity') {
-        document.getElementById('survey-cybersecurity').classList.remove('hidden');
-    } else {
-        document.getElementById('survey-general').classList.remove('hidden');
-    }
+    document.getElementById('survey-cybersecurity').style.display = type === 'cybersecurity' ? 'block' : 'none';
+    document.getElementById('survey-general').style.display = type === 'general' ? 'block' : 'none';
+    document.getElementById('statistics').style.display = 'none';
 }
 
 function showStatistics() {
-    document.getElementById('survey-cybersecurity').classList.add('hidden');
-    document.getElementById('survey-general').classList.add('hidden');
-    document.getElementById('statistics').classList.remove('hidden');
-    fetchStatistics();
+    document.getElementById('survey-cybersecurity').style.display = 'none';
+    document.getElementById('survey-general').style.display = 'none';
+    document.getElementById('statistics').style.display = 'block';
+    renderCharts();
 }
 
 function hideStatistics() {
-    document.getElementById('statistics').classList.add('hidden');
-}
-
-function saveResponses(type) {
-    const form = type === 'cybersecurity' ? document.getElementById('form-cybersecurity') : document.getElementById('form-general');
-    const formData = new FormData(form);
-    const response = {};
-    formData.forEach((value, key) => {
-        response[key] = value;
-    });
-
-    responses[type].push(response);
-
-    // Save to server
-    fetch('/data', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(responses)
-    })
-    .then(response => response.text())
-    .then(text => {
-        alert(text);
-        form.reset();
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-function fetchStatistics() {
-    fetch('/data')
-        .then(response => response.json())
-        .then(data => {
-            responses.cybersecurity = data.cybersecurity || [];
-            responses.general = data.general || [];
-            displayStatistics();
-        })
-        .catch(error => console.error('Error:', error));
-}
-
-function displayStatistics() {
-    const totalCyberResponses = responses.cybersecurity.length;
-    const totalGeneralResponses = responses.general.length;
-    
-    // Example of advanced statistics using Chart.js
-    const ctx = document.getElementById('stats-chart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Cybersecurity Professionals', 'General Public'],
-            datasets: [{
-                label: 'Number of Responses',
-                data: [totalCyberResponses, totalGeneralResponses],
-                backgroundColor: ['#007bff', '#28a745']
-            }]
-        }
-    });
-
-    document.getElementById('stats-content').innerText = 
-        `Total responses from Cybersecurity Professionals: ${totalCyberResponses}\n` +
-        `Total responses from General Public: ${totalGeneralResponses}`;
+    document.getElementById('statistics').style.display = 'none';
 }
 
 function toggleOtherInput(selectElement, inputId) {
-    const inputElement = document.getElementById(inputId);
-    if (selectElement.value === "Other") {
-        inputElement.style.display = "block";
-    } else {
-        inputElement.style.display = "none";
-    }
+    const otherInput = document.getElementById(inputId);
+    otherInput.style.display = selectElement.value === 'Other' ? 'block' : 'none';
+}
+
+function saveResponses(type) {
+    const form = document.getElementById(`form-${type}`);
+    const formData = new FormData(form);
+    const responses = {};
+    
+    formData.forEach((value, key) => {
+        if (responses[key]) {
+            if (!Array.isArray(responses[key])) {
+                responses[key] = [responses[key]];
+            }
+            responses[key].push(value);
+        } else {
+            responses[key] = value;
+        }
+    });
+
+    surveyData[type].push(responses);
+    saveDataToFile();
+}
+
+function saveDataToFile() {
+    const blob = new Blob([JSON.stringify(surveyData)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'surveyData.json';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function renderCharts() {
+    const chartsContainer = document.getElementById('charts-container');
+    chartsContainer.innerHTML = '';
+
+    const ctx = document.createElement('canvas');
+    chartsContainer.appendChild(ctx);
+
+    const data = {
+        labels: ['Security Analyst', 'Security Engineer', 'Security Consultant', 'Security Architect', 'Incident Responder', 'Penetration Tester', 'CISO', 'Other'],
+        datasets: [{
+            label: 'Job Titles',
+            data: surveyData.cybersecurity.reduce((acc, response) => {
+                const title = response.jobTitle || 'Unknown';
+                acc[title] = (acc[title] || 0) + 1;
+                return acc;
+            }, {}),
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    new Chart(ctx.getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: Object.keys(data.datasets[0].data),
+            datasets: [{
+                label: data.datasets[0].label,
+                data: Object.values(data.datasets[0].data),
+                backgroundColor: data.datasets[0].backgroundColor,
+                borderColor: data.datasets[0].borderColor,
+                borderWidth: data.datasets[0].borderWidth
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 }

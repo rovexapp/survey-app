@@ -1,80 +1,123 @@
-function showSurvey(surveyType) {
-    document.getElementById('survey-cybersecurity').style.display = surveyType === 'cybersecurity' ? 'block' : 'none';
-    document.getElementById('survey-general').style.display = surveyType === 'general' ? 'block' : 'none';
-    document.getElementById('statistics').style.display = 'none';
+const responses = {
+    cybersecurity: [],
+    general: []
+};
+
+// Show the correct survey based on the button clicked
+function showSurvey(type) {
+    document.getElementById('survey-cybersecurity').classList.add('hidden');
+    document.getElementById('survey-general').classList.add('hidden');
+    document.getElementById('statistics').classList.add('hidden');
+
+    if (type === 'cybersecurity') {
+        document.getElementById('survey-cybersecurity').classList.remove('hidden');
+    } else {
+        document.getElementById('survey-general').classList.remove('hidden');
+    }
 }
 
+// Show the statistics section
 function showStatistics() {
-    document.getElementById('survey-cybersecurity').style.display = 'none';
-    document.getElementById('survey-general').style.display = 'none';
-    document.getElementById('statistics').style.display = 'block';
-    fetchStatistics();
+    document.getElementById('survey-cybersecurity').classList.add('hidden');
+    document.getElementById('survey-general').classList.add('hidden');
+    document.getElementById('statistics').classList.remove('hidden');
+    displayStatistics();
 }
 
+// Hide the statistics section
 function hideStatistics() {
-    document.getElementById('statistics').style.display = 'none';
+    document.getElementById('statistics').classList.add('hidden');
 }
 
-function toggleOtherInput(element, inputId) {
-    var input = document.getElementById(inputId);
-    input.style.display = element.value === 'Other' ? 'inline' : 'none';
+// Toggle visibility of the "Other" input field
+function toggleOtherInput(selectElement, inputId) {
+    const inputElement = document.getElementById(inputId);
+    if (selectElement.value === 'Other') {
+        inputElement.style.display = 'block';
+        inputElement.required = true;
+    } else {
+        inputElement.style.display = 'none';
+        inputElement.required = false;
+    }
 }
 
+// Save responses to a JSON object
 function saveResponses(surveyType) {
-    var form = document.getElementById('form-' + surveyType);
-    var formData = new FormData(form);
-    var data = {};
-    
+    const form = document.getElementById(`form-${surveyType}`);
+    const formData = new FormData(form);
+    const response = {};
+
     formData.forEach((value, key) => {
-        if (data[key]) {
-            if (Array.isArray(data[key])) {
-                data[key].push(value);
-            } else {
-                data[key] = [data[key], value];
-            }
+        response[key] = value;
+    });
+
+    responses[surveyType].push(response);
+
+    // Save responses to a JSON file (simulation for demonstration purposes)
+    saveToJSONFile(responses);
+
+    alert('Your responses have been saved. Thank you!');
+    form.reset();
+}
+
+// Simulate saving data to a JSON file
+function saveToJSONFile(data) {
+    const dataStr = JSON.stringify(data, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+
+    // Create a temporary link element for download
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'survey_responses.json';
+    link.click();
+
+    // Cleanup
+    URL.revokeObjectURL(url);
+}
+
+// Display the statistics based on responses
+function displayStatistics() {
+    const statsContent = document.getElementById('stats-content');
+    statsContent.innerHTML = ''; // Clear previous stats
+
+    // Example of displaying simple statistics
+    const cybersecurityCount = responses.cybersecurity.length;
+    const generalCount = responses.general.length;
+
+    statsContent.innerHTML = `
+        <p>Total Cybersecurity Professionals Responses: ${cybersecurityCount}</p>
+        <p>Total General Public Responses: ${generalCount}</p>
+    `;
+
+    // Add more complex statistics based on specific questions
+    // For example, calculate familiarity with quantum cryptography
+    const familiarityCounts = countResponses(responses.cybersecurity, 'familiarity');
+    const concernLevelCounts = countResponses(responses.general, 'concernLevel');
+
+    statsContent.innerHTML += `
+        <h3>Familiarity with Quantum Cryptography (Cybersecurity Professionals)</h3>
+        <p>Not familiar: ${familiarityCounts['Not familiar'] || 0}</p>
+        <p>Somewhat familiar: ${familiarityCounts['Somewhat familiar'] || 0}</p>
+        <p>Very familiar: ${familiarityCounts['Very familiar'] || 0}</p>
+        
+        <h3>Concern Level About Data Privacy (General Public)</h3>
+        <p>Not concerned: ${concernLevelCounts['Not concerned'] || 0}</p>
+        <p>Somewhat concerned: ${concernLevelCounts['Somewhat concerned'] || 0}</p>
+        <p>Very concerned: ${concernLevelCounts['Very concerned'] || 0}</p>
+    `;
+}
+
+// Helper function to count responses for a specific question
+function countResponses(responsesArray, key) {
+    const counts = {};
+    responsesArray.forEach(response => {
+        const answer = response[key];
+        if (counts[answer]) {
+            counts[answer]++;
         } else {
-            data[key] = value;
+            counts[answer] = 1;
         }
     });
-
-    fetch('data/saveResponses.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ type: surveyType, response: data })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Saved Responses for ' + surveyType, data);
-        alert('Responses saved for ' + surveyType);
-    });
-}
-
-function fetchStatistics() {
-    fetch('data/responses.json')
-    .then(response => response.json())
-    .then(data => {
-        const ctx = document.getElementById('stats-chart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Cybersecurity Professionals', 'General Public'],
-                datasets: [{
-                    label: 'Number of Responses',
-                    data: [data.cybersecurity.length, data.general.length],
-                    backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)'],
-                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    });
+    return counts;
 }

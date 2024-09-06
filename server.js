@@ -1,31 +1,20 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const bodyParser = require('body-parser');
-
 const app = express();
 const port = 3000;
 
 app.use(express.static('public'));
-app.use(bodyParser.json());
+app.use(express.json());
 
-app.get('/data', (req, res) => {
-    fs.readFile(path.join(__dirname, 'data', 'data.json'), 'utf8', (err, data) => {
-        if (err) {
-            res.status(500).send('Error reading data');
-        } else {
-            res.json(JSON.parse(data));
-        }
-    });
-});
+app.post('/save-responses', (req, res) => {
+    const data = req.body;
 
-app.post('/data', (req, res) => {
-    fs.writeFile(path.join(__dirname, 'data', 'data.json'), JSON.stringify(req.body, null, 2), 'utf8', (err) => {
+    fs.writeFile(path.join(__dirname, 'surveyData.json'), JSON.stringify(data, null, 2), (err) => {
         if (err) {
-            res.status(500).send('Error saving data');
-        } else {
-            res.send('Data saved successfully');
+            return res.status(500).json({ message: 'Failed to save data.' });
         }
+        res.json({ message: 'Data saved successfully.' });
     });
 });
 

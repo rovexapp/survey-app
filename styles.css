@@ -1,69 +1,123 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #f4f4f4;
+const responses = {
+    cybersecurity: [],
+    general: []
+};
+
+// Show the correct survey based on the button clicked
+function showSurvey(type) {
+    document.getElementById('survey-cybersecurity').classList.add('hidden');
+    document.getElementById('survey-general').classList.add('hidden');
+    document.getElementById('statistics').classList.add('hidden');
+
+    if (type === 'cybersecurity') {
+        document.getElementById('survey-cybersecurity').classList.remove('hidden');
+    } else {
+        document.getElementById('survey-general').classList.remove('hidden');
+    }
 }
 
-.container {
-    max-width: 700px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+// Show the statistics section
+function showStatistics() {
+    document.getElementById('survey-cybersecurity').classList.add('hidden');
+    document.getElementById('survey-general').classList.add('hidden');
+    document.getElementById('statistics').classList.remove('hidden');
+    displayStatistics();
 }
 
-h1, h2 {
-    text-align: center;
+// Hide the statistics section
+function hideStatistics() {
+    document.getElementById('statistics').classList.add('hidden');
 }
 
-button {
-    margin: 10px 0;
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
+// Toggle visibility of the "Other" input field
+function toggleOtherInput(selectElement, inputId) {
+    const inputElement = document.getElementById(inputId);
+    if (selectElement.value === 'Other') {
+        inputElement.style.display = 'block';
+        inputElement.required = true;
+    } else {
+        inputElement.style.display = 'none';
+        inputElement.required = false;
+    }
 }
 
-button:hover {
-    background-color: #0056b3;
+// Save responses to a JSON object
+function saveResponses(surveyType) {
+    const form = document.getElementById(`form-${surveyType}`);
+    const formData = new FormData(form);
+    const response = {};
+
+    formData.forEach((value, key) => {
+        response[key] = value;
+    });
+
+    responses[surveyType].push(response);
+
+    // Save responses to a JSON file (simulation for demonstration purposes)
+    saveToJSONFile(responses);
+
+    alert('Your responses have been saved. Thank you!');
+    form.reset();
 }
 
-.hidden {
-    display: none;
+// Simulate saving data to a JSON file
+function saveToJSONFile(data) {
+    const dataStr = JSON.stringify(data, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+
+    // Create a temporary link element for download
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'survey_responses.json';
+    link.click();
+
+    // Cleanup
+    URL.revokeObjectURL(url);
 }
 
-label {
-    display: block;
-    margin: 10px 0 5px;
+// Display the statistics based on responses
+function displayStatistics() {
+    const statsContent = document.getElementById('stats-content');
+    statsContent.innerHTML = ''; // Clear previous stats
+
+    // Example of displaying simple statistics
+    const cybersecurityCount = responses.cybersecurity.length;
+    const generalCount = responses.general.length;
+
+    statsContent.innerHTML = `
+        <p>Total Cybersecurity Professionals Responses: ${cybersecurityCount}</p>
+        <p>Total General Public Responses: ${generalCount}</p>
+    `;
+
+    // Add more complex statistics based on specific questions
+    // For example, calculate familiarity with quantum cryptography
+    const familiarityCounts = countResponses(responses.cybersecurity, 'familiarity');
+    const concernLevelCounts = countResponses(responses.general, 'concernLevel');
+
+    statsContent.innerHTML += `
+        <h3>Familiarity with Quantum Cryptography (Cybersecurity Professionals)</h3>
+        <p>Not familiar: ${familiarityCounts['Not familiar'] || 0}</p>
+        <p>Somewhat familiar: ${familiarityCounts['Somewhat familiar'] || 0}</p>
+        <p>Very familiar: ${familiarityCounts['Very familiar'] || 0}</p>
+        
+        <h3>Concern Level About Data Privacy (General Public)</h3>
+        <p>Not concerned: ${concernLevelCounts['Not concerned'] || 0}</p>
+        <p>Somewhat concerned: ${concernLevelCounts['Somewhat concerned'] || 0}</p>
+        <p>Very concerned: ${concernLevelCounts['Very concerned'] || 0}</p>
+    `;
 }
 
-.form-section {
-    margin-bottom: 20px;
-}
-
-.other-input {
-    display: none;
-    margin-top: 5px;
-}
-
-.question-number {
-    font-weight: bold;
-}
-
-.instructions {
-    background-color: #e9f7fa;
-    border-left: 6px solid #2196F3;
-    padding: 10px;
-    margin-bottom: 20px;
-}
-
-.stats-content {
-    padding: 10px;
-    background-color: #f8f9fa;
-    border-radius: 5px;
+// Helper function to count responses for a specific question
+function countResponses(responsesArray, key) {
+    const counts = {};
+    responsesArray.forEach(response => {
+        const answer = response[key];
+        if (counts[answer]) {
+            counts[answer]++;
+        } else {
+            counts[answer] = 1;
+        }
+    });
+    return counts;
 }

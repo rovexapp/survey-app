@@ -42,33 +42,20 @@
                 <input type="text" name="otherJobTitle" class="other-input" id="otherJobTitleInput" placeholder="Please specify">
             </div>
             <div class="form-section">
-                <label class="question-number">2. How many years have you been working in cybersecurity?</label>
-                <input type="number" name="yearsExperience" min="0" required>
-            </div>
-            <div class="form-section">
-                <label class="question-number">3. What is your primary area of focus in cybersecurity?</label>
-                <select name="focusArea" required>
-                    <option value="Network Security">Network Security</option>
-                    <option value="Application Security">Application Security</option>
-                    <option value="Endpoint Security">Endpoint Security</option>
-                    <option value="Cloud Security">Cloud Security</option>
-                    <option value="Incident Response">Incident Response</option>
-                    <option value="Compliance">Compliance</option>
-                    <option value="Other">Other (please specify)</option>
-                </select>
-                <input type="text" name="otherFocusArea" class="other-input" id="otherFocusAreaInput" placeholder="Please specify">
-            </div>
-            <div class="form-section">
-                <label class="question-number">4. How familiar are you with quantum cryptography?</label>
-                <select name="quantumCryptographyFamiliarity" required>
-                    <option value="Very Familiar">Very Familiar</option>
-                    <option value="Somewhat Familiar">Somewhat Familiar</option>
-                    <option value="Not Familiar">Not Familiar</option>
+                <label class="question-number">2. How familiar are you with quantum cryptography?</label>
+                <select name="familiarity" required>
+                    <option value="Not familiar">Not familiar</option>
+                    <option value="Somewhat familiar">Somewhat familiar</option>
+                    <option value="Very familiar">Very familiar</option>
                 </select>
             </div>
             <div class="form-section">
-                <label class="question-number">5. How do you see the role of quantum cryptography in the future of cybersecurity?</label>
-                <textarea name="futureRole" rows="4" required></textarea>
+                <label class="question-number">3. Do you think quantum computing will impact cybersecurity?</label>
+                <select name="impact" required>
+                    <option value="Yes, significantly">Yes, significantly</option>
+                    <option value="Yes, but not significantly">Yes, but not significantly</option>
+                    <option value="No">No</option>
+                </select>
             </div>
             <button type="button" onclick="saveResponses('cybersecurity')">Save Responses</button>
         </form>
@@ -89,51 +76,31 @@
                 </select>
             </div>
             <div class="form-section">
-                <label class="question-number">2. What is your highest level of education?</label>
-                <select name="educationLevel" required>
-                    <option value="High School">High School</option>
-                    <option value="Associate Degree">Associate Degree</option>
-                    <option value="Bachelor's Degree">Bachelor's Degree</option>
-                    <option value="Master's Degree">Master's Degree</option>
-                    <option value="Doctorate">Doctorate</option>
-                    <option value="Other">Other (please specify)</option>
-                </select>
-                <input type="text" name="otherEducationLevel" class="other-input" id="otherEducationLevelInput" placeholder="Please specify">
-            </div>
-            <div class="form-section">
-                <label class="question-number">3. How often do you use the internet for sensitive transactions (e.g., online banking, shopping)?</label>
-                <select name="internetUsage" required>
-                    <option value="Daily">Daily</option>
-                    <option value="Weekly">Weekly</option>
-                    <option value="Monthly">Monthly</option>
-                    <option value="Rarely">Rarely</option>
-                    <option value="Never">Never</option>
+                <label class="question-number">2. Are you aware of quantum cryptography?</label>
+                <select name="awareness" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
                 </select>
             </div>
             <div class="form-section">
-                <label class="question-number">4. How concerned are you about online privacy and security?</label>
-                <select name="privacyConcerns" required>
-                    <option value="Very Concerned">Very Concerned</option>
-                    <option value="Somewhat Concerned">Somewhat Concerned</option>
-                    <option value="Not Concerned">Not Concerned</option>
+                <label class="question-number">3. Do you think quantum technologies will improve internet security?</label>
+                <select name="improvement" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Not sure">Not sure</option>
                 </select>
-            </div>
-            <div class="form-section">
-                <label class="question-number">5. Do you think quantum cryptography will have a significant impact on cybersecurity in the future?</label>
-                <textarea name="quantumCryptographyImpact" rows="4" required></textarea>
             </div>
             <button type="button" onclick="saveResponses('general')">Save Responses</button>
         </form>
     </div>
 
     <div id="statistics" class="hidden">
-        <h2>Survey Statistics</h2>
-        <canvas id="stats-chart" width="400" height="200"></canvas>
+        <h2>Statistics</h2>
+        <div id="stats-content">Statistics will be displayed here.</div>
         <button onclick="hideStatistics()">Close</button>
     </div>
 </div>
 
 <script src="script.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

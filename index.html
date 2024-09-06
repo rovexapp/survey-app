@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surveys on Quantum Cryptography and Cybersecurity</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Surveys on Quantum Cryptography and Cybersecurity</h1>
+    
+    <div class="instructions">
+        <strong>Instructions for Participants:</strong>
+        <ul>
+            <li>Please answer all questions honestly.</li>
+            <li>Your responses will be kept confidential and used solely for research purposes.</li>
+        </ul>
+    </div>
+    
+    <button onclick="showSurvey('cybersecurity')">For Cybersecurity Professionals</button>
+    <button onclick="showSurvey('general')">For General Public</button>
+    <button onclick="showStatistics()">Show Statistics</button>
+
+    <div id="survey-cybersecurity" class="hidden">
+        <h2>Survey for Cybersecurity Professionals</h2>
+        <form id="form-cybersecurity">
+            <div class="form-section">
+                <label class="question-number">1. What is your current job title?</label>
+                <select name="jobTitle" required onchange="toggleOtherInput(this, 'otherJobTitleInput')">
+                    <option value="">Select Job Title</option>
+                    <option value="Security Analyst">Security Analyst</option>
+                    <option value="Security Engineer">Security Engineer</option>
+                    <option value="Security Consultant">Security Consultant</option>
+                    <option value="Security Architect">Security Architect</option>
+                    <option value="Incident Responder">Incident Responder</option>
+                    <option value="Penetration Tester">Penetration Tester</option>
+                    <option value="CISO">Chief Information Security Officer (CISO)</option>
+                    <option value="Other">Other (please specify)</option>
+                </select>
+                <input type="text" name="otherJobTitle" class="other-input" id="otherJobTitleInput" placeholder="Please specify">
+            </div>
+            <div class="form-section">
+                <label class="question-number">2. How many years have you been working in cybersecurity?</label>
+                <input type="number" name="yearsExperience" min="0" required>
+            </div>
+            <div class="form-section">
+                <label class="question-number">3. What is your primary area of focus in cybersecurity?</label>
+                <select name="focusArea" required>
+                    <option value="Network Security">Network Security</option>
+                    <option value="Application Security">Application Security</option>
+                    <option value="Endpoint Security">Endpoint Security</option>
+                    <option value="Cloud Security">Cloud Security</option>
+                    <option value="Incident Response">Incident Response</option>
+                    <option value="Compliance">Compliance</option>
+                    <option value="Other">Other (please specify)</option>
+                </select>
+                <input type="text" name="otherFocusArea" class="other-input" id="otherFocusAreaInput" placeholder="Please specify">
+            </div>
+            <div class="form-section">
+                <label class="question-number">4. How familiar are you with quantum cryptography?</label>
+                <select name="quantumCryptographyFamiliarity" required>
+                    <option value="Very Familiar">Very Familiar</option>
+                    <option value="Somewhat Familiar">Somewhat Familiar</option>
+                    <option value="Not Familiar">Not Familiar</option>
+                </select>
+            </div>
+            <div class="form-section">
+                <label class="question-number">5. How do you see the role of quantum cryptography in the future of cybersecurity?</label>
+                <textarea name="futureRole" rows="4" required></textarea>
+            </div>
+            <button type="button" onclick="saveResponses('cybersecurity')">Save Responses</button>
+        </form>
+    </div>
+
+    <div id="survey-general" class="hidden">
+        <h2>Survey for General Public</h2>
+        <form id="form-general">
+            <div class="form-section">
+                <label class="question-number">1. What is your age group?</label>
+                <select name="ageGroup" required>
+                    <option value="Under 18">Under 18</option>
+                    <option value="18-24">18-24</option>
+                    <option value="25-34">25-34</option>
+                    <option value="35-44">35-44</option>
+                    <option value="45-54">45-54</option>
+                    <option value="55 or above">55 or above</option>
+                </select>
+            </div>
+            <div class="form-section">
+                <label class="question-number">2. What is your highest level of education?</label>
+                <select name="educationLevel" required>
+                    <option value="High School">High School</option>
+                    <option value="Associate Degree">Associate Degree</option>
+                    <option value="Bachelor's Degree">Bachelor's Degree</option>
+                    <option value="Master's Degree">Master's Degree</option>
+                    <option value="Doctorate">Doctorate</option>
+                    <option value="Other">Other (please specify)</option>
+                </select>
+                <input type="text" name="otherEducationLevel" class="other-input" id="otherEducationLevelInput" placeholder="Please specify">
+            </div>
+            <div class="form-section">
+                <label class="question-number">3. How often do you use the internet for sensitive transactions (e.g., online banking, shopping)?</label>
+                <select name="internetUsage" required>
+                    <option value="Daily">Daily</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Monthly">Monthly</option>
+                    <option value="Rarely">Rarely</option>
+                    <option value="Never">Never</option>
+                </select>
+            </div>
+            <div class="form-section">
+                <label class="question-number">4. How concerned are you about online privacy and security?</label>
+                <select name="privacyConcerns" required>
+                    <option value="Very Concerned">Very Concerned</option>
+                    <option value="Somewhat Concerned">Somewhat Concerned</option>
+                    <option value="Not Concerned">Not Concerned</option>
+                </select>
+            </div>
+            <div class="form-section">
+                <label class="question-number">5. Do you think quantum cryptography will have a significant impact on cybersecurity in the future?</label>
+                <textarea name="quantumCryptographyImpact" rows="4" required></textarea>
+            </div>
+            <button type="button" onclick="saveResponses('general')">Save Responses</button>
+        </form>
+    </div>
+
+    <div id="statistics" class="hidden">
+        <h2>Survey Statistics</h2>
+        <canvas id="stats-chart" width="400" height="200"></canvas>
+        <button onclick="hideStatistics()">Close</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>

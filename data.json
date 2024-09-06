@@ -1,0 +1,27 @@
+{
+    "cybersecurity": [
+        {
+            "jobTitle": ["Security Analyst"],
+            "experience": ["4-6 years"],
+            "familiarity": ["Familiar"],
+            "training": ["No"],
+            "effectiveness": ["More effective"],
+            "benefits": ["Enhanced security against hacking", "Ability to detect eavesdropping"],
+            "challenges": ["High implementation costs", "Lack of understanding or training"],
+            "optimism": ["Optimistic"],
+            "projects": ["Yes"],
+            "comments": ["Looking forward to advancements in quantum cryptography."]
+        }
+    ],
+    "general": [
+        {
+            "familiarity": ["Somewhat familiar"],
+            "importance": ["Important"],
+            "developments": ["Yes"],
+            "benefits": ["Enhanced security against hacking", "Future-proofing against quantum computers"],
+            "concerns": ["High costs", "Lack of understanding"],
+            "impact": ["It might greatly enhance cybersecurity measures in the future."],
+            "comments": ["I am interested in learning more about quantum cryptography."]
+        }
+    ]
+}
